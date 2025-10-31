@@ -17,47 +17,126 @@ document.addEventListener('DOMContentLoaded', function() {
     const insightsList = document.getElementById('insightsList');
     
     // Modal functionality
-    function createModal(title, content) {
-        const modal = document.createElement('div');
-        modal.className = 'modal';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <span class="close-modal">&times;</span>
-                <h2>${title}</h2>
-                <p>${content}</p>
-            </div>
-        `;
-        
-        document.body.appendChild(modal);
-        
-        // Close modal when clicking the X
+    const loginModal = document.getElementById('loginModal');
+    const signupModal = document.getElementById('signupModal');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    
+    function openModal(modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeModal(modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+    
+    function setupModalClose(modal) {
         const closeBtn = modal.querySelector('.close-modal');
-        closeBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-            document.body.removeChild(modal);
-        });
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => closeModal(modal));
+        }
         
-        // Close modal when clicking outside the modal
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
-                modal.style.display = 'none';
-                document.body.removeChild(modal);
+                closeModal(modal);
             }
         });
-        
-        modal.style.display = 'flex';
     }
+    
+    // Setup modal close handlers
+    setupModalClose(loginModal);
+    setupModalClose(signupModal);
+    
+    // Switch between modals
+    document.querySelectorAll('.switch-modal').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('data-target');
+            const currentModal = link.closest('.modal');
+            const targetModal = document.getElementById(targetId);
+            
+            if (currentModal && targetModal) {
+                closeModal(currentModal);
+                setTimeout(() => openModal(targetModal), 150);
+            }
+        });
+    });
     
     // Event Listeners
     loginBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        createModal('Login', 'Login functionality will be implemented here.');
+        openModal(loginModal);
     });
     
     getStartedBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        createModal('Get Started', 'Sign up form will be implemented here.');
+        openModal(signupModal);
     });
+    
+    // Form submissions
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Here you would integrate with your backend
+            console.log('Login attempt:', { email, password });
+            
+            // Simulate API call
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Signing in...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert('Login functionality will be connected to your backend API.');
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                // closeModal(loginModal);
+            }, 1500);
+        });
+    }
+    
+    if (signupForm) {
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Validate password length
+            if (password.length < 8) {
+                alert('Password must be at least 8 characters long!');
+                return;
+            }
+            
+            // Here you would integrate with your backend
+            console.log('Signup attempt:', { name, email, password });
+            
+            // Simulate API call
+            const submitBtn = signupForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Creating account...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert('Signup functionality will be connected to your backend API.');
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                // closeModal(signupModal);
+            }, 1500);
+        });
+    }
     
     scanBtn.addEventListener('click', () => {
         const domain = domainInput.value.trim();
@@ -207,66 +286,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Helpers
-    function setRisk(score) {
-        const clamped = Math.max(0, Math.min(100, score));
-        if (riskBar) riskBar.style.width = clamped + '%';
-        if (riskScore) riskScore.textContent = `${clamped} / 100`;
-        if (!riskLevel) return;
-        let level = 'Low';
-        riskLevel.classList.remove('badge-low', 'badge-med', 'badge-high');
-        if (clamped < 34) {
-            riskLevel.classList.add('badge-low'); level = 'Low';
-        } else if (clamped < 67) {
-            riskLevel.classList.add('badge-med'); level = 'Medium';
-        } else {
-            riskLevel.classList.add('badge-high'); level = 'High';
-        }
-        riskLevel.textContent = level;
-    }
+    
 
-    function applyResult(result) {
-        setRisk(result.score);
-        if (sslSubject) sslSubject.textContent = result.ssl.subject;
-        if (sslIssuer) sslIssuer.textContent = result.ssl.issuer;
-        if (sslFrom) sslFrom.textContent = result.ssl.validFrom;
-        if (sslTo) sslTo.textContent = result.ssl.validTo;
-        if (htmlSummary) htmlSummary.textContent = result.htmlSummary;
-        if (insightsList) {
-            insightsList.innerHTML = '';
-            result.insights.forEach((tip, idx) => {
-                const li = document.createElement('li');
-                li.textContent = `${idx + 1}. ${tip}`;
-                insightsList.appendChild(li);
-            });
-        }
-        if (insightsCard && !insightsCard.classList.contains('open')) {
-            // start collapsed; do nothing
-        }
-    }
-
-    // Demo placeholder data; replace with backend response mapping
-    function demoResult(domain) {
-        const tld = domain.split('.').pop() || 'com';
-        const date = new Date();
-        const toDate = new Date(date.getFullYear(), date.getMonth() + 2, date.getDate());
-        const pad = n => String(n).padStart(2, '0');
-        return {
-            score: domain.includes('login') || domain.includes('verify') ? 62 : 12,
-            ssl: {
-                subject: `*.${tld}`,
-                issuer: 'WR2',
-                validFrom: `${pad(date.getDate())}/${pad(date.getMonth()+1)}/${date.getFullYear()}`,
-                validTo: `${pad(toDate.getDate())}/${pad(toDate.getMonth()+1)}/${toDate.getFullYear()}`
-            },
-            htmlSummary: 'The HTML content appears consistent with a legitimate site structure. External resources point to expected domains. No forms detected in provided snippet.',
-            insights: [
-                'Whitelist high-reputation domains and subdomains related to the brand',
-                'Detect suspicious subdomain patterns and excessive keywords',
-                'Assess DOM complexity vs brand baseline to flag simplified clones',
-                'Check for robust JS globals and CSP nonces typical to the brand',
-                'If a login form exists, validate action target and input patterns'
-            ]
-        };
-    }
+    
+    
 });
