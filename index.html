@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShieldPhish - Phishing Protection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+ 
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>ShieldPhish</span>
+            </a>
+            <nav class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#about">About</a>
+            </nav>
+            <div class="auth-buttons">
+                <a href="#" class="btn btn-outline" id="loginBtn">Log In</a>
+                <a href="#" class="btn btn-primary" id="getStartedBtn">Get Started</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-copy">
+                <h1>Your real-time defense against phishing</h1>
+                <p>Analyze URLs instantly and stay protected. Beautiful, fast, and powered by your backend.</p>
+                
+                <div class="search-container">
+                    <input type="text" id="domainInput" class="search-input" placeholder="https://example.com">
+                    <button class="btn btn-primary search-btn" id="scanBtn">Analyze</button>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">10M+</div>
+                        <div class="stat-label">Threats Blocked</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">50K+</div>
+                        <div class="stat-label">Businesses Protected</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <video class="globe-video" src="globe.mp4" autoplay muted loop playsinline></video>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section (UI only; data comes from backend) -->
+    <section class="results" id="results">
+        <div class="container">
+            <div class="results-header">
+                <h2>Overall Risk Assessment</h2>
+                <div class="risk-meta">
+                    <span id="riskLevel" class="badge badge-low">Low</span>
+                    <span id="riskScore" class="risk-score">0 / 100</span>
+                </div>
+            </div>
+            <div class="risk-bar">
+                <div class="risk-bar-fill" id="riskBar" style="width: 0%"></div>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card" id="sslCard">
+                    <div class="card-title">
+                        <i class="fas fa-lock"></i>
+                        <span>SSL Certificate Details</span>
+                    </div>
+                    <div class="ssl-status">
+                        <span class="status-dot status-secure"></span>
+                        <span class="status-text">Secure & Valid</span>
+                    </div>
+                    <div class="kv">
+                        <div><span>Subject</span><strong id="sslSubject">—</strong></div>
+                        <div><span>Issuer</span><strong id="sslIssuer">—</strong></div>
+                        <div><span>Valid From</span><strong id="sslFrom">—</strong></div>
+                        <div><span>Valid To</span><strong id="sslTo">—</strong></div>
+                    </div>
+                </div>
+
+                <div class="card" id="htmlCard">
+                    <div class="card-title">
+                        <i class="fas fa-file-code"></i>
+                        <span>HTML Content Summary</span>
+                    </div>
+                    <p id="htmlSummary" class="muted">No content yet. Run a scan to populate this section.</p>
+                </div>
+            </div>
+
+            <div class="card accordion" id="insightsCard">
+                <div class="accordion-header" data-accordion-toggle>
+                    <div class="card-title">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>AI-Powered Detection Insights</span>
+                    </div>
+                    <button class="btn btn-outline btn-compact" aria-expanded="false">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="accordion-content">
+                    <ol id="insightsList" class="insights-list">
+                        <li>Enhanced domain reputation and whitelisting</li>
+                        <li>Deeper URL structure analysis</li>
+                        <li>HTML content complexity and integrity checks</li>
+                        <li>JavaScript authenticity markers</li>
+                        <li>Login form specifics and credential traps</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Powerful Protection Features</h2>
+            <p class="section-subtitle">Advanced security solution
+                s to keep your data safe from phishing threats</p>
+                <br>
+            <div class="features-grid">
+                
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="feature-title">Real-time     </h3>
+                    <p class="feature-desc">Continuously monitor and analyze web traffic in real-time to detect and block phishing attempts before they reach your network.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Phishing Detection</h3>
+                    <p class="feature-desc">Advanced algorithms identify and prevent sophisticated phishing attacks, protecting your sensitive information.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <h3 class="feature-title">URL Reputation Scoring</h3>
+                    <p class="feature-desc">Comprehensive scanning of URLs to detect malicious links and prevent access to harmful websites.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="feature-title">Detailed Insights Dashboard</h3>
+                    <p class="feature-desc">User-friendly dashboard providing detailed reports and analytics on phishing attempts and blocked threats.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <script src="script.js"></script>
+</body>
+</html>
