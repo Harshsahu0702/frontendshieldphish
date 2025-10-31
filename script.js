@@ -22,6 +22,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginForm');
     const signupForm = document.getElementById('signupForm');
     
+// About Modal functionality
+const aboutLink = document.getElementById('aboutLink');
+const aboutModal = document.getElementById('aboutModal');
+
+// Add click event to open the About modal
+if (aboutLink && aboutModal) {
+    aboutLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(aboutModal);
+    });
+    
+    // Setup close functionality for the About modal
+    setupModalClose(aboutModal);
+    
+    // Add event listener for the "Get Protected Now" button in the modal
+    const getProtectedBtn = aboutModal.querySelector('.about-cta .btn');
+    if (getProtectedBtn) {
+        getProtectedBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeModal(aboutModal);
+            // Scroll to the features section
+            const featuresSection = document.getElementById('features');
+            if (featuresSection) {
+                featuresSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+}
+
     function openModal(modal) {
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
